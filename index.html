@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>School Administration & Students Assessment Management System</title>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><div class="logo">SA</div><div><h2>School Admin</h2><small>Assessment System</small></div></div>
+  <div class="nav-title">Main</div>
+  <div class="nav">
+    <button class="active" data-page="dashboard">🏠 Dashboard</button>
+    <button data-page="students">🎓 Students</button>
+    <button data-page="teachers">👨‍🏫 Teachers</button>
+    <button data-page="classes">🏫 Classes</button>
+    <button data-page="subjects">📚 Subjects</button>
+    <button data-page="assessments">📝 Assessments</button>
+    <button data-page="attendance">📅 Attendance</button>
+    <button data-page="reports">📊 Report Cards</button>
+  </div>
+  <div class="nav-title">Administration</div>
+  <div class="nav">
+    <button data-page="school">⚙️ School Profile</button>
+    <button data-page="grading">🎯 Grading Scale</button>
+    <button data-page="users">👥 Users</button>
+    <button data-page="settings">🔧 Settings</button>
+  </div>
+  <div class="sidebar-footer">© 2026 School Administration System<br>All data is stored in this browser.</div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  <div style="display:flex;gap:12px;align-items:center"><button class="btn secondary mobile-menu" onclick="toggleMenu()">☰</button><div><h1 id="pageTitle">Dashboard</h1><p id="dateText"></p></div></div>
+  <div class="profile"><div class="avatar">AD</div><div><b>Administrator</b><small style="display:block;color:#64748b">System Admin</small></div></div>
+</header>
+
+<section id="dashboard" class="page active">
+  <div class="hero"><h2>Welcome to your School Dashboard 👋</h2><p>Manage students, teachers, classes, assessments, attendance and report cards from one place.</p></div>
+  <div class="cards">
+    <div class="stat"><div class="icon">🎓</div><h3 id="statStudents">0</h3><p>Total Students</p></div>
+    <div class="stat"><div class="icon">👨‍🏫</div><h3 id="statTeachers">0</h3><p>Total Teachers</p></div>
+    <div class="stat"><div class="icon">🏫</div><h3 id="statClasses">0</h3><p>Active Classes</p></div>
+    <div class="stat"><div class="icon">📝</div><h3 id="statAssessments">0</h3><p>Assessments</p></div>
+  </div>
+  <div class="grid2">
+    <div class="panel"><div class="panel-head"><h3>Quick Actions</h3></div><div class="quick">
+      <button onclick="openModal('student')"><b>➕ Add Student</b><span>Create a student profile</span></button>
+      <button onclick="openModal('teacher')"><b>➕ Add Teacher</b><span>Register a teacher</span></button>
+      <button onclick="openModal('assessment')"><b>📝 Record Assessment</b><span>Enter subject marks</span></button>
+      <button onclick="openModal('attendance')"><b>📅 Attendance</b><span>Record attendance</span></button>
+      <button onclick="showPage('reports')"><b>📊 Report Cards</b><span>View yearly results</span></button>
+      <button onclick="showPage('school')"><b>⚙️ School Profile</b><span>Update school details</span></button>
+    </div></div>
+    <div class="panel"><div class="panel-head"><h3>Performance Overview</h3></div>
+      <div class="grade-box"><span>Average Assessment</span><b id="avgScore">0%</b></div>
+      <div style="margin:12px 0" class="progress"><span id="avgBar" style="width:0%"></span></div>
+      <div class="grade-box"><span>Attendance Rate</span><b id="attendanceRate">0%</b></div>
+      <div style="margin:12px 0" class="progress"><span id="attendanceBar" style="width:0%"></span></div>
+      <div class="report-card"><b>Current Academic Year</b><p style="margin:6px 0;color:#64748b">2026 • Term <span id="currentTerm">1</span></p></div>
+    </div>
+  </div>
+  <div class="panel"><div class="panel-head"><h3>Recent Students</h3><button class="btn primary sm" onclick="showPage('students')">View All</button></div><div class="table-wrap"><table><thead><tr><th>Student</th><th>ID</th><th>Class</th><th>Gender</th><th>Status</th><th>Action</th></tr></thead><tbody id="recentStudents"></tbody></table></div></div>
+</section>
+
+<section id="students" class="page">
+  <div class="panel"><div class="panel-head"><h3>Student Management</h3><button class="btn primary" onclick="openModal('student')">＋ Add Student</button></div>
+  <div class="toolbar"><input class="search" id="studentSearch" placeholder="Search student name, ID or class..." oninput="renderStudents()"><select class="search" id="studentClassFilter" onchange="renderStudents()"><option value="">All Classes</option></select></div>
+  <div class="table-wrap"><table><thead><tr><th>ID</th><th>Student</th><th>Gender</th><th>Date of Birth</th><th>Class</th><th>Guardian</th><th>Status</th><th>Actions</th></tr></thead><tbody id="studentTable"></tbody></table></div></div>
+</section>
+
+<section id="teachers" class="page"><div class="panel"><div class="panel-head"><h3>Teacher Management</h3><button class="btn primary" onclick="openModal('teacher')">＋ Add Teacher</button></div><div class="toolbar"><input class="search" id="teacherSearch" placeholder="Search teacher..." oninput="renderTeachers()"></div><div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Phone</th><th>Email</th><th>Subject</th><th>Class</th><th>Actions</th></tr></thead><tbody id="teacherTable"></tbody></table></div></div></section>
+
+<section id="classes" class="page"><div class="panel"><div class="panel-head"><h3>Class & Class-Teacher Management</h3><button class="btn primary" onclick="openModal('class')">＋ Add Class</button></div><div class="table-wrap"><table><thead><tr><th>Class</th><th>Stream</th><th>Room</th><th>Teacher</th><th>Students</th><th>Status</th><th>Actions</th></tr></thead><tbody id="classTable"></tbody></table></div></div></section>
+
+<section id="subjects" class="page"><div class="panel"><div class="panel-head"><h3>Subject Management</h3><button class="btn primary" onclick="openModal('subject')">＋ Add Subject</button></div><div class="table-wrap"><table><thead><tr><th>Code</th><th>Subject</th><th>Department</th><th>Teacher</th><th>Max Mark</th><th>Actions</th></tr></thead><tbody id="subjectTable"></tbody></table></div></div></section>
+
+<section id="assessments" class="page"><div class="panel"><div class="panel-head"><h3>Subject Assessments</h3><div class="actions"><select class="search" id="assessmentTerm" onchange="renderAssessments()"><option>Term 1</option><option>Term 2</option><option>Term 3</option><option>Term 4</option></select><button class="btn primary" onclick="openModal('assessment')">＋ Record Mark</button></div></div><div class="table-wrap"><table><thead><tr><th>Student</th><th>Subject</th><th>Term</th><th>Assessment</th><th>Mark</th><th>Grade</th><th>Actions</th></tr></thead><tbody id="assessmentTable"></tbody></table></div></div></section>
+
+<section id="attendance" class="page"><div class="panel"><div class="panel-head"><h3>Attendance Management</h3><button class="btn primary" onclick="openModal('attendance')">＋ Record Attendance</button></div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Student</th><th>Class</th><th>Status</th><th>Remarks</th><th>Actions</th></tr></thead><tbody id="attendanceTable"></tbody></table></div></div></section>
+
+<section id="reports" class="page"><div class="panel"><div class="panel-head"><h3>Report Cards & Results</h3><div class="actions"><select class="search" id="reportTerm" onchange="renderReports()"><option>Yearly</option><option>Term 1</option><option>Term 2</option><option>Term 3</option><option>Term 4</option></select><button class="btn success" onclick="printReports()">🖨 Print Report Cards</button></div></div><div id="reportCards"></div></div></section>
+
+<section id="school" class="page"><div class="panel"><div class="panel-head"><h3>School Profile</h3><button class="btn primary" onclick="editSchool()">✏ Edit</button></div><div id="schoolProfile"></div></div></section>
+<section id="grading" class="page"><div class="panel"><div class="panel-head"><h3>Configurable Grading Scale</h3><button class="btn primary" onclick="openModal('grade')">＋ Add Grade</button></div><div class="table-wrap"><table><thead><tr><th>Grade</th><th>Minimum %</th><th>Maximum %</th><th>Remark</th><th>Actions</th></tr></thead><tbody id="gradeTable"></tbody></table></div></div></section>
+<section id="users" class="page"><div class="panel"><div class="panel-head"><h3>User Management</h3><button class="btn primary" onclick="openModal('user')">＋ Add User</button></div><div class="table-wrap"><table><thead><tr><th>Username</th><th>Full Name</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody id="userTable"></tbody></table></div></div></section>
+<section id="settings" class="page"><div class="panel"><div class="panel-head"><h3>System Settings</h3><button class="btn primary" onclick="saveSettings()">💾 Save Settings</button></div><div class="form-grid"><div class="field"><label>Academic Year</label><input id="setYear" value="2026"></div><div class="field"><label>Current Term</label><select id="setTerm"><option>1</option><option>2</option><option>3</option><option>4</option></select></div><div class="field"><label>School Motto</label><input id="setMotto" value="Education for Excellence"></div><div class="field"><label>Currency</label><input id="setCurrency" value="PGK"></div></div></div><div class="panel"><div class="panel-head"><h3>Data Management</h3></div><div class="actions"><button class="btn secondary" onclick="exportData()">⬇ Export Backup</button><button class="btn secondary" onclick="document.getElementById('importFile').click()">⬆ Import Backup</button><input type="file" id="importFile" accept=".json" hidden onchange="importData(event)"><button class="btn danger" onclick="resetData()">Reset Demo Data</button></div></div></section>
+</main>
+</div>
+
+<div class="modal" id="modal"><div class="modal-card"><div class="modal-head"><h3 id="modalTitle">Add Record</h3><button class="close" onclick="closeModal()">×</button></div><form id="modalForm" onsubmit="saveModal(event)"><div id="modalBody" class="form-grid"></div><div class="actions" style="justify-content:flex-end;margin-top:18px"><button type="button" class="btn secondary" onclick="closeModal()">Cancel</button><button class="btn primary" type="submit">Save Record</button></div></form></div></div>
+<div class="toast" id="toast"></div>
+
+
+</body>
+</html>
